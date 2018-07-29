@@ -14,7 +14,8 @@ ADOLC=ADOL-C-2.5.2
 COLPACK=ColPack-1.0.9
 SUITESPARSE=SuiteSparse-4.4.3
 LUSOL=lusol
-PSOPT=psopt-debian-9-installer
+PSOPT_GIT_BRANCH=debian-9-installer
+PSOPT=psopt-$PSOPT_GIT_BRANCH
 
 ## Set the compiler search paths
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:$INC_DIR
@@ -56,7 +57,7 @@ if [ ! -f $MUMPS_DIR/configure ]; then
 fi
 
 ## Build and install IPOPT, METIS AND MUMPS
-if [ ! [ -f $LIB_DIR/libcoinmetis.a -a -f $LIB_DIR/libcoinmumps.a -a -f $LIB_DIR/libipopt.a ] ]; then
+if [ ! -f $LIB_DIR/libcoinmetis.a -a ! -f $LIB_DIR/libcoinmumps.a -a ! -f $LIB_DIR/libipopt.a ]; then
   cd $IPOPT_DIR
   ./configure --prefix=$prefix --enable-static coin_skip_warn_cxxflags=yes
   make -j
@@ -101,14 +102,14 @@ sudo apt-get -y install libx11-dev libxt-dev libgd2-xpm-dev \
 
 ## Get PSOPT
 PSOPT_DIR=$SRC_DIR/$PSOPT
-#if [ ! -f $PSOPT_DIR ]; then
-#  wget -P $SRC_DIR https://github.com/ViniciusALima/psopt/archive/$PSOPT.tar.gz
-#  tar -C $SRC_DIR -xzf $PSOPT_DIR.tar.gz
-#  rm -f $PSOPT_DIR.tar.gz
-#fi
+if [ ! -d $PSOPT_DIR ]; then
+  wget -O $PSOPT_DIR.tar.gz https://github.com/ViniciusALima/psopt/archive/$PSOPT_GIT_BRANCH.tar.gz
+  tar -C $SRC_DIR -xzf $PSOPT_DIR.tar.gz
+  rm -f $PSOPT_DIR.tar.gz
+fi
 
 ## Get SuiteSparse (PSOPT dependence)
-SUITESPARSE_DIR=$PSOPT_DIR/SuiteSparse
+SUITESPARSE_DIR=$PSOPT_DIR/$SUITESPARSE
 if [ ! -d $SUITESPARSE_DIR ]; then
   wget -P $PSOPT_DIR http://faculty.cse.tamu.edu/davis/SuiteSparse/$SUITESPARSE.tar.gz
   tar  -C $PSOPT_DIR -xzf $SUITESPARSE_DIR.tar.gz
@@ -125,5 +126,8 @@ fi
 
 ## Build and install PSOPT, SuiteSparse and Lusol
 cd $PSOPT_DIR
-#make -j all
+cmake ./ -Bbuild
+cd build
+make -j
+make install DESTDIR=$HOME
 
