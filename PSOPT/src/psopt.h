@@ -1094,7 +1094,7 @@ extern Workspace* tempsnoptworkspace;
 #endif
 
 
-#include "IpIpoptApplication.hpp"
+#include "coin/IpIpoptApplication.hpp"
 #include "ipopt_psopt.h"
 
 

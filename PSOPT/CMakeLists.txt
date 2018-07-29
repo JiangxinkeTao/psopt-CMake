@@ -11,6 +11,9 @@ file(GLOB SOURCES ${SRC_DIR}/*.cxx) #TODO: improve this lazy man solution
 # dmatrix includes
 include_directories(${CMAKE_SOURCE_DIR}/dmatrix/include)
 
+# lusol includes
+include_directories(${CMAKE_SOURCE_DIR}/lusol/csrc)
+
 # adol-c includes
 # TODO: give the option to build adol-c as part of this package
 # include_directories(${CMAKE_SOURCE_DIR}/ADOL-C/include)

@@ -32,7 +32,7 @@ Author:    Professor Victor M. Becerra
 #ifndef __IPOPT_PSOPT_HPP__
 #define __IPOPT_PSOPT_HPP__
 
-#include "IpTNLP.hpp"
+#include "coin/IpTNLP.hpp"
 
 
 using namespace Ipopt;
