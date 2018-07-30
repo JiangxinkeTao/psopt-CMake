@@ -565,8 +565,16 @@ void print_solution_summary(Prob& problem, Alg& algorithm, Sol& solution, Worksp
         }
       }
 
-#ifdef UNIX
-     fprintf(outfile,"\n\n>>>>> Rank of parameter covariance matrix: %i ", rank(Cp));
+#ifdef UNIX_IGNORED
+// _IGNORED added due to ambiguous call to the rank() function
+// GCC 6.3 could not match the correct call:
+// dmatrixv.h: int rank(const DMatrix &)
+// dmatrixv.h: int rank(const SparseMatrix &)
+// /usr/include/c++/6/type_traits: template<class> struct std::rank
+//
+// TODO: eliminating the using std statement my solve the problem.
+//
+     fprintf(outfile,"\n\n>>>>> Rank of parameter covariance matrix: %i ", rank(Cp);
 #endif
       fprintf(outfile,"\n\n>>> 95 percent statistical confidence limits on estimated parameters ");
       fprintf(outfile,"\nPhase\tParameter\t(Low Confidence Limit) \t(Value) \t\t(High Confidence Limit)");

@@ -110,7 +110,7 @@ fi
 
 ## Get SuiteSparse (PSOPT dependence)
 SUITESPARSE_DIR=$PSOPT_DIR/$SUITESPARSE
-if [ ! -d $SUITESPARSE_DIR ]; then
+if [ ! -d $PSOPT_DIR/SuiteSparse ]; then
   wget -P $PSOPT_DIR http://faculty.cse.tamu.edu/davis/SuiteSparse/$SUITESPARSE.tar.gz
   tar  -C $PSOPT_DIR -xzf $SUITESPARSE_DIR.tar.gz
   rm -f $SUITESPARSE_DIR.tar.gz
@@ -126,8 +126,9 @@ fi
 
 ## Build and install PSOPT, SuiteSparse and Lusol
 cd $PSOPT_DIR
+rm -rf build
 cmake ./ -Bbuild
 cd build
-make -j
+make
 make install DESTDIR=$HOME
 
