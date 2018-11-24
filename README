@@ -1,4 +1,18 @@
-FORKED TO MAKE A CLEARER INSTALL PROCESS ON DEBIAN 9 LINUX SYSTEM
+# FORKED FOR EASY BUILD PROCESS
+
+To install:
+
+Install CXSParse, IPOPT and ADOL-C
+
+``` bash
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j -l
+```
+
+
+# Original README
 
 This is the PSOPT library, a software tool for computational optimal control
 
