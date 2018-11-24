@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
+add_definitions("-DUSE_IPOPT")
+
 # PSOPT headers and files
 set(HEADERS ${PSOPT_DIR}/src/ipopt_psoc.h
             ${PSOPT_DIR}/src/ipopt_psopt.h
@@ -35,11 +37,16 @@ set(SOURCES ${PSOPT_DIR}/src/derivatives.cxx
             ${PSOPT_DIR}/src/validate.cxx
             ${PSOPT_DIR}/src/workspace.cxx)
 
-# compiler settings
+include_directories(../dmatrix/include)
+
 add_library(psopt STATIC ${HEADERS} ${SOURCES})
-target_compile_definitions(psopt PRIVATE UNIX LAPACK SPARSE_MATRIX 
-                                         USE_IPOPT)
-target_compile_options(psopt PRIVATE -O0 -g -w)
+target_link_libraries(psopt
+    lusol
+    dmatrix
+    dl
+    ${CXSPARSE_LIBRARIES}
+    ${IPOPT_LIBRARIES}
+)
 
 
 # install settings

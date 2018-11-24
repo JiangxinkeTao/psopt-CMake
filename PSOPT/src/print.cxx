@@ -30,7 +30,7 @@ Author:    Professor Victor M. Becerra
 
 #include "psopt.h"
 
-void psopt_print(Workspace* workspace, char* msg)
+void psopt_print(Workspace* workspace, const char* msg)
 {
     if (workspace->algorithm->print_level) {
          fprintf(stderr,"%s", msg);
@@ -257,7 +257,7 @@ void print_psopt_summary(Prob& problem, Alg& algorithm, Sol& solution, Workspace
     fprintf(outfile,"\nNLP solver used: \t\t\t\t%s", algorithm.nlp_method.c_str());
 
     if ( algorithm.nlp_method == "IPOPT") {
-        if (solution.nlp_return_code  == (int) Solve_Succeeded) {
+        if (solution.nlp_return_code  == 0) {
             fprintf(outfile,"\nOptimal (unscaled) cost function value: \t%e", solution.cost);
             for (i=0;i < problem.nphases; i++) {
 		mv = mean(tra(solution.relative_errors[i]));
@@ -325,7 +325,8 @@ void print_psopt_summary(Prob& problem, Alg& algorithm, Sol& solution, Workspace
 	auxstr = "type " + mesh_stats_file;
 #endif
 
-    system(auxstr.c_str());
+		int ret = system(auxstr.c_str());
+		(void) ret;
 
 
 #ifndef WIN32
@@ -334,7 +335,8 @@ void print_psopt_summary(Prob& problem, Alg& algorithm, Sol& solution, Workspace
 	auxstr = "type " + filename;
 #endif
 
-    system(auxstr.c_str());
+		ret = system(auxstr.c_str());
+		(void) ret;
 
 
 
@@ -429,7 +431,7 @@ void print_solution_summary(Prob& problem, Alg& algorithm, Sol& solution, Worksp
     fprintf(outfile,"\nTotal CPU time (seconds):\t\t\t%e", solution.cpu_time);
 
     if ( algorithm.nlp_method == "IPOPT") {
-        if (solution.nlp_return_code  == (int) Solve_Succeeded) {
+        if (solution.nlp_return_code  == 0) {
             fprintf(outfile,"\nOptimal (unscaled) cost function value: \t%e", solution.cost);
             for (i=0;i < problem.nphases; i++) {
             	fprintf(outfile,"\nPhase %i endpoint cost function value:\t\t%e",i+1, solution.endpoint_cost[i]);
@@ -546,7 +548,7 @@ void print_solution_summary(Prob& problem, Alg& algorithm, Sol& solution, Worksp
 
     if ( problem.observation_function!=NULL && algorithm.parameter_statistics == "yes") {
 
-    fprintf(outfile,"\n****************************************** PARAMETER STATISTICS *****************************************", i);
+    fprintf(outfile,"\n****************************************** PARAMETER STATISTICS *****************************************");
 
     bool peout = compute_parameter_statistics(Cp, p, plow, phigh,r, workspace);
 

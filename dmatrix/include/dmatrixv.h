@@ -97,17 +97,17 @@ extern "C" {
 #else
 
 
-#include <stdio.h>
-#include <stdarg.h>
+//#include <stdio.h>
+//#include <stdarg.h>
 
-#ifdef WIN32
-#include <stdlib.h>
-#include <malloc.h>
-#endif
+//#ifdef WIN32
+//#include <stdlib.h>
+//#include <malloc.h>
+//#endif
 
-#ifndef WIN32
-#include <mem.h> static long start_clock;
-#endif
+//#ifndef WIN32
+//#include <mem.h> static long start_clock;
+//#endif
 
 #endif
 
@@ -150,7 +150,7 @@ using std::string;
 
 
 class DMatrix;
-class SparseMatrix;
+//class SparseMatrix;
 
 //! DMatrix class
 
@@ -241,9 +241,9 @@ protected:
 //! Increments the index of temporary objects
    static int    IncrementAuxIndx() {
 #ifdef CHECK_AUX
-		fprintf(stderr,"\nauxIndx=%d",auxIndx);
+    fprintf(stderr,"\nauxIndx=%d",auxIndx);
 #endif
-		return ++auxIndx; }
+    return ++auxIndx; }
 //! Decrements the index of temporary objects
    static int    DecrementAuxIndx() { return --auxIndx ; }
 //! Sets the index of temporary objects
@@ -1371,14 +1371,14 @@ public:
    friend DMatrix& SVD( const DMatrix& A, DMatrix* U=NULL, DMatrix* V=NULL );
    //! This function returns Q, the orthonormal basis for the range of a matrix A, such that \f$ Q Q' = I \f$. The number of columns of Q is the rank of A.
    /**
-   	\param A is a DMatrix object
-   	\return Reference to a temporary DMatrix object with the result of the operation
+    \param A is a DMatrix object
+    \return Reference to a temporary DMatrix object with the result of the operation
    */
    friend DMatrix& orth( const DMatrix& A );
    //! This function returns Z, the orthonormal basis for the null space of a matrix A, such that \f$ Z Z' = I \f$ and \f$ A Z=0 \f$. The number of columns of Z is the nullity of A.
    /**
-   	\param A is a DMatrix object
-   	\return Reference to a temporary DMatrix object with the result of the operation
+    \param A is a DMatrix object
+    \return Reference to a temporary DMatrix object with the result of the operation
    */
    friend DMatrix& null( const DMatrix& A );
    //!  This function uses the LAPACK routine dgelss_() to compute the minimum norm solution to a real linear least squares problem: Minimize \f$ || B - A x ||_2 \f$ using the singular value decomposition (SVD) of A. A is a rectangular matrix which may be rank-deficient.
@@ -1886,10 +1886,10 @@ int dgelss_(integer *m, integer *n, integer *nrhs,
 	s, doublereal *rcond, integer *rank, doublereal *work, integer *lwork,
 	 integer *info);
 
-  /* CLAPACK LQ factorization routine */
+	/* CLAPACK LQ factorization routine */
 
 int dgelqf_(integer *m, integer *n, doublereal *a, integer *
-        lda, doublereal *tau, doublereal *work, integer *lwork, integer *info);
+				lda, doublereal *tau, doublereal *work, integer *lwork, integer *info);
 
 
 
@@ -2156,8 +2156,8 @@ public:
    friend DMatrix& full(const SparseMatrix& A);
    //! This function returns Z, the orthonormal basis for the null space of a sparse matrix A, such that \f$ Z Z' = I \f$ and \f$ A Z=0 \f$. The number of columns of Z is the nullity of A.
    /**
-   	\param A is a SparseMatrix object
-   	\return Reference to a temporary DMatrix object with the result of the operation
+    \param A is a SparseMatrix object
+    \return Reference to a temporary DMatrix object with the result of the operation
    */
    friend DMatrix& null( const SparseMatrix& A );
    //! Returns the singular value decomposition of a sparse matrix \f$ A = U' diag(s) V \f$, where vector s contains the singular values of A. The function uses the LAPACK routine dgesvd_().
@@ -2183,8 +2183,8 @@ public:
    friend DMatrix& LQ( const SparseMatrix& A, DMatrix* Q );
    //! This function returns Q, the orthonormal basis for the range of a sparse matrix A, such that \f$ Q Q' = I \f$. The number of columns of Q is the rank of A.
    /**
-   	\param A is a SparseMatrix object
-   	\return Reference to a temporary DMatrix object with the result of the operation
+    \param A is a SparseMatrix object
+    \return Reference to a temporary DMatrix object with the result of the operation
    */
    friend DMatrix& orth( const SparseMatrix& A );
    //!  This function computes and returns the Schur decomposition of a sparse matrix A, such that \f$ A=Q'U Q \f$, where U is an upper triangular matrix and Q is a unitary matrix. This function uses the LAPACK routine dgees_()
