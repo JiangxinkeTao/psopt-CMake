@@ -120,7 +120,7 @@ void compute_derivatives_trajectory( DMatrix& Xdot, Prob& problem, Sol& solution
 
             time = (solution.nodes[i])(k);
 
-             problem.dae(derivatives, path,  states, controls, parameters, time, solution.xad, iphase,workspace);
+             (*problem.dae)(derivatives, path,  states, controls, parameters, time, solution.xad, iphase,workspace);
 
 
             for(j=1; j<= nstates; j++) {

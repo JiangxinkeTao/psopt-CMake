@@ -75,7 +75,7 @@ void evaluate_differential_error_in_phase(DMatrix& state_error, int iphase, adou
      }
 
      get_parameters(parameters, xad, iphase, workspace );
-     problem->dae(derivatives, path, states, controls, parameters, time, xad, iphase, workspace);
+     (*problem->dae)(derivatives, path, states, controls, parameters, time, xad, iphase, workspace);
 
      for (j=0;j<nstates;j++) {
           get_state_derivative(&dot_state_j,j+1,iphase,time,xad, workspace);

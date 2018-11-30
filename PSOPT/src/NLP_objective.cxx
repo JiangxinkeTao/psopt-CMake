@@ -109,7 +109,7 @@ adouble ff_ad(adouble* xad, Workspace* workspace)
 
 		    adouble stime = (workspace->snodes[i])(k);
 
-		    integrand_cost = problem.integrand_cost(states,controls,parameters,time,xad,iphase,workspace);
+				integrand_cost = (*problem.integrand_cost)(states,controls,parameters,time,xad,iphase,workspace);
 
 		    if (workspace->algorithm->collocation_method=="Chebyshev") {
 			// Multiply by the reciprocal of the Chebyshev weighting function to evaluate the
@@ -144,7 +144,7 @@ adouble ff_ad(adouble* xad, Workspace* workspace)
 
 		      adouble h = tk1-tk;
 
-		      interval_cost = problem.integrand_cost(states,controls,parameters,tk,xad,iphase,workspace);
+					interval_cost = (*problem.integrand_cost)(states,controls,parameters,tk,xad,iphase,workspace);
 
 		      (solution.integrand_cost[i])(k) = interval_cost.value();
 
@@ -152,7 +152,7 @@ adouble ff_ad(adouble* xad, Workspace* workspace)
 		      get_controls(controls, xad, iphase,k+1, workspace );
 		      get_states(states_next, xad, iphase, k+1, workspace);
 
-		      integrand = problem.integrand_cost(states_next,controls,parameters,tk1,xad,iphase,workspace);
+					integrand = (*problem.integrand_cost)(states_next,controls,parameters,tk1,xad,iphase,workspace);
 
 		      interval_cost += integrand;
 
@@ -174,7 +174,7 @@ adouble ff_ad(adouble* xad, Workspace* workspace)
 
 			  }
 
-			  interval_cost += 4.0*problem.integrand_cost(states,controls,parameters,tmiddle,xad,iphase,workspace);
+				interval_cost += 4.0*(*problem.integrand_cost)(states,controls,parameters,tmiddle,xad,iphase,workspace);
 
 
 			  interval_cost *= h/6.0;
@@ -201,7 +201,7 @@ adouble ff_ad(adouble* xad, Workspace* workspace)
 
         get_states(states, xad, iphase, norder+1, workspace);
 
-        endpoint_cost = problem.endpoint_cost(initial_states,states,parameters,t0,tf,xad,iphase, workspace);
+        endpoint_cost = (*problem.endpoint_cost)(initial_states,states,parameters,t0,tf,xad,iphase, workspace);
 
         solution.endpoint_cost[i] = endpoint_cost.value();
 

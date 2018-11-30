@@ -129,7 +129,7 @@ class ADMatrix {
   adouble* a;
   int n;
   int m;
-  public:
+public:
   // Constructor
   ADMatrix( int n, int m);
   ADMatrix( int n );
@@ -166,17 +166,17 @@ typedef struct dual_str Dual;
 
 
 typedef struct {
-int     nnodes;
-int     nvars;
-int     ncons;
-int     n_obj_evals;
-int     n_con_evals;
-int     n_jacobian_evals;
-int     n_hessian_evals;
-int     n_ode_rhs_evals;
-double  epsilon_max;
-double  CPU_time;
-string  method;
+  int     nnodes;
+  int     nvars;
+  int     ncons;
+  int     n_obj_evals;
+  int     n_con_evals;
+  int     n_jacobian_evals;
+  int     n_hessian_evals;
+  int     n_ode_rhs_evals;
+  double  epsilon_max;
+  double  CPU_time;
+  string  method;
 } MeshStats;
 
 
@@ -230,14 +230,14 @@ typedef struct alg_str Alg;
 
 struct ulbounds_str {
 
-    DMatrix events;
-    DMatrix path;
-    DMatrix states;
-    DMatrix controls;
-    DMatrix parameters;
+  DMatrix events;
+  DMatrix path;
+  DMatrix states;
+  DMatrix controls;
+  DMatrix parameters;
 
-    double StartTime;
-    double EndTime;
+  double StartTime;
+  double EndTime;
 
 };
 
@@ -245,30 +245,30 @@ struct ulbounds_str {
 typedef struct ulbounds_str ULBounds;
 
 struct bounds_str {
-   ULBounds lower;
-   ULBounds upper;
+  ULBounds lower;
+  ULBounds upper;
 };
 
 struct name_str {
-   string* states_;
-   string* controls_;
-   string* parameters_;
+  string* states_;
+  string* controls_;
+  string* parameters_;
 
-   string& states(int i) {return states_[i-1];}
-   string& controls(int i) { return controls_[i-1];}
-   string& parameters(int i) {return parameters_[i-1];}
+  string& states(int i) {return states_[i-1];}
+  string& controls(int i) { return controls_[i-1];}
+  string& parameters(int i) {return parameters_[i-1];}
 };
 
 typedef struct name_str Name;
 
 struct units_str {
-    string* states_;
-    string* controls_;
-    string* parameters_;
-    string   time;
-    string& states(int i) {return states_[i-1];}
-    string& controls(int i) { return controls_[i-1];}
-    string& parameters(int i) {return parameters_[i-1];}
+  string* states_;
+  string* controls_;
+  string* parameters_;
+  string   time;
+  string& states(int i) {return states_[i-1];}
+  string& controls(int i) { return controls_[i-1];}
+  string& parameters(int i) {return parameters_[i-1];}
 };
 
 typedef struct units_str Units;
@@ -277,20 +277,20 @@ typedef struct bounds_str Bounds;
 
 
 struct scaling_str {
-   DMatrix  controls;
-   DMatrix  states;
-   DMatrix  parameters;
-   DMatrix  defects;
-   DMatrix  path;
-   DMatrix  events;
-   double    time;
+  DMatrix  controls;
+  DMatrix  states;
+  DMatrix  parameters;
+  DMatrix  defects;
+  DMatrix  path;
+  DMatrix  events;
+  double    time;
 };
 
 typedef struct scaling_str Scaling;
 
 struct prob_scaling_str {
-   DMatrix   linkages;
-   double    objective;
+  DMatrix   linkages;
+  double    objective;
 };
 
 typedef struct prob_scaling_str ProbScaling;
@@ -298,45 +298,45 @@ typedef struct prob_scaling_str ProbScaling;
 
 struct phases_str {
 
-   int nstates;
+  int nstates;
 
-   int ncontrols;
+  int ncontrols;
 
-   int nparameters;
+  int nparameters;
 
-   int nobserved;
+  int nobserved;
 
-   int nsamples;
+  int nsamples;
 
-   int nevents;
+  int nevents;
 
-   int npath;
+  int npath;
 
-   int current_number_of_intervals;
+  int current_number_of_intervals;
 
-   Bounds bounds;
+  Bounds bounds;
 
-   Guess  guess;
+  Guess  guess;
 
-   DMatrix nodes;
+  DMatrix nodes;
 
-   Scaling scale;
+  Scaling scale;
 
-   bool zero_cost_integrand;
+  bool zero_cost_integrand;
 
-   DMatrix observations;
+  DMatrix observations;
 
-   DMatrix covariance;
+  DMatrix covariance;
 
-   DMatrix residual_weights;
+  DMatrix residual_weights;
 
-   DMatrix observation_nodes;
+  DMatrix observation_nodes;
 
-   double  regularization_factor;
+  double  regularization_factor;
 
-   Name name;
+  Name name;
 
-   Units units;
+  Units units;
 
 };
 
@@ -344,58 +344,81 @@ typedef struct phases_str Phases;
 
 
 struct prob_ul_bounds {
-     DMatrix linkage;
-     DMatrix times;
+  DMatrix linkage;
+  DMatrix times;
 };
 
 typedef prob_ul_bounds ProbULBounds;
 
 
 struct prob_bounds_str {
-    ProbULBounds lower;
-    ProbULBounds upper;
+  ProbULBounds lower;
+  ProbULBounds upper;
 };
 
 typedef struct prob_bounds_str ProbBounds;
 
 typedef struct work_str Workspace;
 
+struct CostFunctor
+{
+  virtual adouble operator()(adouble* states, adouble* controls, adouble* parameters,
+                             adouble& time,  adouble* xad, int iphase, Workspace* workspace) = 0;
+};
+
+struct DaeFunctor
+{
+  virtual void operator()(adouble* derivatives, adouble* path, adouble* states,
+                          adouble* controls, adouble* parameters, adouble& time,
+                          adouble* xad, int iphase, Workspace* workspace) = 0;
+};
+
+struct EndpointFunctor
+{
+  virtual adouble operator()(adouble* initial_states, adouble* final_states,
+                             adouble* parameters,adouble& t0, adouble& tf,
+                             adouble* xad, int iphase, Workspace* workspace) = 0;
+};
+
+struct EventFunctor
+{
+  virtual void operator()(adouble* e, adouble* initial_states, adouble* final_states,
+                          adouble* parameters,adouble& t0, adouble& tf, adouble* xad,
+                          int iphase, Workspace* workspace) = 0;
+};
+
+struct LinkageFunctor
+{
+  virtual void operator()( adouble* linkages, adouble* xad, Workspace* workspace) = 0;
+};
+
+struct ObservationFunctor
+{
+  virtual void operator()(adouble* observed_variable, adouble* states, adouble* controls,
+                          adouble* parameters, adouble& time, int k, adouble* xad,
+                          int iphase, Workspace* workspace);
+};
 
 struct prob_str {
 
-   int nphases;
+  int nphases;
+  Phases* phase;
+  ProbScaling scale;
+  int nlinkages;
+  bool multi_segment_flag;
+  bool continuous_controls_flag;
+  ProbBounds bounds;
+  string  name;
+  string  outfilename;
+  void* user_data;
 
-   Phases* phase;
-
-   ProbScaling scale;
-
-   int nlinkages;
-
-   bool multi_segment_flag;
-
-   bool continuous_controls_flag;
-
-   ProbBounds bounds;
-
-   string  name;
-
-   string  outfilename;
-
-   void* user_data;
-
-   Phases&   phases(int iphase);
-
-   adouble (*endpoint_cost)(adouble* initial_states, adouble* final_states, adouble* parameters,adouble& t0, adouble& tf, adouble* xad, int iphase, Workspace* workspace);
-
-   adouble (*integrand_cost)(adouble* states, adouble* controls, adouble* parameters, adouble& time,  adouble* xad, int iphase, Workspace* workspace);
-
-   void (*dae)(adouble* derivatives, adouble* path, adouble* states, adouble* controls, adouble* parameters, adouble& time, adouble* xad, int iphase, Workspace* workspace);
-
-   void (*events)(adouble* e, adouble* initial_states, adouble* final_states, adouble* parameters,adouble& t0, adouble& tf, adouble* xad, int iphase, Workspace* workspace);
-
-   void (*linkages)( adouble* linkages, adouble* xad, Workspace* workspace);
-
-   void (*observation_function)(adouble* observed_variable, adouble* states, adouble* controls, adouble* parameters, adouble& time, int k, adouble* xad, int iphase, Workspace* workspace);
+  Phases&   phases(int iphase);
+  EndpointFunctor *endpoint_cost;
+  CostFunctor* integrand_cost;
+  DaeFunctor* dae;
+  EventFunctor *events;
+  LinkageFunctor *linkages;
+  void (*observation_function)(adouble* observed_variable, adouble* states, adouble* controls, adouble* parameters, adouble& time, int k, adouble* xad, int iphase, Workspace* workspace);
 
 };
 
@@ -405,37 +428,37 @@ typedef struct prob_str Prob;
 
 
 struct sol_str {
-   DMatrix *states;
-   DMatrix *controls;
-   DMatrix *nodes;
-   DMatrix *parameters;
-   DMatrix *relative_errors;
-   Dual     dual;
-   DMatrix *integrand_cost;
-   double  *endpoint_cost;
-   double  *integrated_cost;
-   double   cost;
-   adouble* xad;
-   int      nlp_return_code;
-   double   cpu_time;
-   bool     error_flag;
-   string   error_msg;
-   int       mesh_refinement_iterations;
-   MeshStats*  mesh_stats;
-   string   start_date_and_time;
-   string   end_date_and_time;
-   Prob* problem;
-   DMatrix& get_states_in_phase(int iphase);
-   DMatrix& get_controls_in_phase(int iphase);
-   DMatrix& get_time_in_phase(int iphase);
-   DMatrix& get_parameters_in_phase(int iphase);
-   DMatrix& get_dual_costates_in_phase(int iphase);
-   DMatrix& get_dual_hamiltonian_in_phase(int iphase);
-   DMatrix& get_dual_path_in_phase(int iphase);
-   DMatrix& get_dual_events_in_phase(int iphase);
-   DMatrix& get_dual_linkages();
-   DMatrix& get_relative_local_error_in_phase(int iphase);
-   double   get_cost() { return cost; }
+  DMatrix *states;
+  DMatrix *controls;
+  DMatrix *nodes;
+  DMatrix *parameters;
+  DMatrix *relative_errors;
+  Dual     dual;
+  DMatrix *integrand_cost;
+  double  *endpoint_cost;
+  double  *integrated_cost;
+  double   cost;
+  adouble* xad;
+  int      nlp_return_code;
+  double   cpu_time;
+  bool     error_flag;
+  string   error_msg;
+  int       mesh_refinement_iterations;
+  MeshStats*  mesh_stats;
+  string   start_date_and_time;
+  string   end_date_and_time;
+  Prob* problem;
+  DMatrix& get_states_in_phase(int iphase);
+  DMatrix& get_controls_in_phase(int iphase);
+  DMatrix& get_time_in_phase(int iphase);
+  DMatrix& get_parameters_in_phase(int iphase);
+  DMatrix& get_dual_costates_in_phase(int iphase);
+  DMatrix& get_dual_hamiltonian_in_phase(int iphase);
+  DMatrix& get_dual_path_in_phase(int iphase);
+  DMatrix& get_dual_events_in_phase(int iphase);
+  DMatrix& get_dual_linkages();
+  DMatrix& get_relative_local_error_in_phase(int iphase);
+  double   get_cost() { return cost; }
 };
 
 typedef struct sol_str Sol;
@@ -444,15 +467,15 @@ typedef struct sol_str Sol;
 
 
 typedef struct {
-    DMatrix* dfdx_j;
-    DMatrix* F1;
-    DMatrix* F2;
-    DMatrix* F3;
-    DMatrix* F4;
-    double*  x;
-    double*  g;
-    adouble* xad;
-    adouble* gad;
+  DMatrix* dfdx_j;
+  DMatrix* F1;
+  DMatrix* F2;
+  DMatrix* F3;
+  DMatrix* F4;
+  double*  x;
+  double*  g;
+  adouble* xad;
+  adouble* gad;
 } GRWORK;
 
 
@@ -473,155 +496,155 @@ typedef struct {
 
 typedef struct {
 
-   int** colindex;
-   int*  size;
-   int   number;
+  int** colindex;
+  int*  size;
+  int   number;
 
 } IGroup;
 
 class SparseMatrix;
 struct work_str {
 
-   Sol*      solution;
-   Prob*     problem;
-   Alg*      algorithm;
-   DMatrix*  P;
-   DMatrix*  sindex;
-   DMatrix*  w;
-   DMatrix*  D;
-   DMatrix*  D2;
-   DMatrix*  snodes;
-   DMatrix*  old_snodes;
-   DMatrix*  xlb;
-   DMatrix*  xub;
-   DMatrix*  x0;
-   DMatrix*  lambda;
-   DMatrix*  dual_costates;
-   DMatrix*  dual_path;
-   DMatrix*  dual_events;
-   DMatrix*  Xsnopt;
-   DMatrix*  gsnopt;
-   DMatrix*  DerivResid;
-   DMatrix*  h;
-   DMatrix*  Xdotgg;
-   DMatrix*  e;
-   DMatrix*  hgg;
-   DMatrix*  Xip;
-   DMatrix*  JacRow;
-   DMatrix*  Gip;
-   DMatrix*  GFip;
-   SparseMatrix*  Ax;
-   SparseMatrix*  As;
-   SparseMatrix*  Gsp;
-   DMatrix*  control_scaling;
-   DMatrix*  control_shift;
-   DMatrix*  state_scaling;
-   DMatrix*  parameter_scaling;
-   DMatrix*  state_shift;
-   DMatrix*  deriv_scaling;
-   DMatrix*  path_scaling;
-   DMatrix*  event_scaling;
-   DMatrix*  constraint_scaling;
-   DMatrix*  linkage;
-   DMatrix*  prev_states;
-   DMatrix*  prev_costates;
-   DMatrix*  prev_controls;
-   DMatrix*  prev_param;
-   DMatrix*  prev_path;
-   DMatrix*  prev_nodes;
-   DMatrix*  prev_t0;
-   DMatrix*  prev_tf;
-   DMatrix*  Xdot;
-   DMatrix*  JacCol1;
-   DMatrix*  JacCol2;
-   DMatrix*  JacCol3;
-   DMatrix*  xp;
-   DMatrix*  emax_history;
-   DMatrix*  order_reduction;
-   DMatrix*  old_relative_errors;
-   DMatrix*  error_scaling_weights;
+  Sol*      solution;
+  Prob*     problem;
+  Alg*      algorithm;
+  DMatrix*  P;
+  DMatrix*  sindex;
+  DMatrix*  w;
+  DMatrix*  D;
+  DMatrix*  D2;
+  DMatrix*  snodes;
+  DMatrix*  old_snodes;
+  DMatrix*  xlb;
+  DMatrix*  xub;
+  DMatrix*  x0;
+  DMatrix*  lambda;
+  DMatrix*  dual_costates;
+  DMatrix*  dual_path;
+  DMatrix*  dual_events;
+  DMatrix*  Xsnopt;
+  DMatrix*  gsnopt;
+  DMatrix*  DerivResid;
+  DMatrix*  h;
+  DMatrix*  Xdotgg;
+  DMatrix*  e;
+  DMatrix*  hgg;
+  DMatrix*  Xip;
+  DMatrix*  JacRow;
+  DMatrix*  Gip;
+  DMatrix*  GFip;
+  SparseMatrix*  Ax;
+  SparseMatrix*  As;
+  SparseMatrix*  Gsp;
+  DMatrix*  control_scaling;
+  DMatrix*  control_shift;
+  DMatrix*  state_scaling;
+  DMatrix*  parameter_scaling;
+  DMatrix*  state_shift;
+  DMatrix*  deriv_scaling;
+  DMatrix*  path_scaling;
+  DMatrix*  event_scaling;
+  DMatrix*  constraint_scaling;
+  DMatrix*  linkage;
+  DMatrix*  prev_states;
+  DMatrix*  prev_costates;
+  DMatrix*  prev_controls;
+  DMatrix*  prev_param;
+  DMatrix*  prev_path;
+  DMatrix*  prev_nodes;
+  DMatrix*  prev_t0;
+  DMatrix*  prev_tf;
+  DMatrix*  Xdot;
+  DMatrix*  JacCol1;
+  DMatrix*  JacCol2;
+  DMatrix*  JacCol3;
+  DMatrix*  xp;
+  DMatrix*  emax_history;
+  DMatrix*  order_reduction;
+  DMatrix*  old_relative_errors;
+  DMatrix*  error_scaling_weights;
 
 
-   double    obj_scaling;
-   GRWORK*   grw;
-   int       nvars;
-   int       ncons;
-   int       **current_nodes;
-   int       jac_done;
-   int*      iArow;
-   int*      jAcol;
-   int*      iGrow;
-   int*      jGcol;
-   double*   jac_values;
-   double*   jac_Aij;
-   double*   jac_Gij;
-   int       jac_nnz;
-   int       jac_nnzA;
-   int       jac_nnzG;
-   double*   nrm_row;
-   unsigned int*      hess_ir;
-   unsigned int*      hess_jc;
-   unsigned int*      iGfun;
-   unsigned int*      jGvar;
-   unsigned int*      iGfun1;
-   unsigned int*      jGvar1;
-   unsigned int*      iGfun2;
-   unsigned int*      jGvar2;
-   int       use_constraint_scaling;
-   int       F_nnz;
-   double*   G2;
-   adouble*  xad;
-   adouble*  gad;
-   adouble**  states;
-   adouble**  controls;
-   adouble**  parameters;
-   adouble**  resid;
-   adouble**  derivatives;
-   adouble**  initial_states;
-   adouble**  final_states;
-   adouble**  initial_controls;
-   adouble**  final_controls;
-   adouble**  events;
-   adouble**  path;
-   adouble**  states_traj;
-   adouble**  derivs_traj;
-   adouble**  second_derivs_traj;
-   adouble*   linkages;
-   adouble*   fgad;
-   adouble*   time_array_tmp;
-   adouble*   single_trajectory_tmp;
-   adouble*   L_ad_tmp;
-   adouble*   u_spline;
-   adouble*   z_spline;
-   adouble*   y2a_spline;
-   adouble**   states_next;
-   adouble**   controls_next;
-   adouble**   derivatives_next;
-   adouble**   path_next;
-   adouble**   path_bar;
-   adouble**   states_bar;
-   adouble**   controls_bar;
-   adouble**   derivatives_bar;
-   adouble**   observed_variable;
-   adouble**   observed_residual;
-   adouble**   lam_resid;
-   adouble**   interp_states_pe;
-   adouble**   interp_controls_pe;
-   double*    lambda_d;
-   double*    fg;
-   bool       trace_f_done;
-   IGroup*    igroup;
-   char       text[2000];
-   FILE*      psopt_solution_summary_file;
-   FILE*      mesh_statistics;
-   FILE*      mesh_statistics_tex;
-   int        current_mesh_refinement_iteration;
-   bool       auto_linked_flag;
-   bool       enable_nlp_counters;
-   string     differential_defects;
-   clock_t    start_ticks;
+  double    obj_scaling;
+  GRWORK*   grw;
+  int       nvars;
+  int       ncons;
+  int       **current_nodes;
+  int       jac_done;
+  int*      iArow;
+  int*      jAcol;
+  int*      iGrow;
+  int*      jGcol;
+  double*   jac_values;
+  double*   jac_Aij;
+  double*   jac_Gij;
+  int       jac_nnz;
+  int       jac_nnzA;
+  int       jac_nnzG;
+  double*   nrm_row;
+  unsigned int*      hess_ir;
+  unsigned int*      hess_jc;
+  unsigned int*      iGfun;
+  unsigned int*      jGvar;
+  unsigned int*      iGfun1;
+  unsigned int*      jGvar1;
+  unsigned int*      iGfun2;
+  unsigned int*      jGvar2;
+  int       use_constraint_scaling;
+  int       F_nnz;
+  double*   G2;
+  adouble*  xad;
+  adouble*  gad;
+  adouble**  states;
+  adouble**  controls;
+  adouble**  parameters;
+  adouble**  resid;
+  adouble**  derivatives;
+  adouble**  initial_states;
+  adouble**  final_states;
+  adouble**  initial_controls;
+  adouble**  final_controls;
+  adouble**  events;
+  adouble**  path;
+  adouble**  states_traj;
+  adouble**  derivs_traj;
+  adouble**  second_derivs_traj;
+  adouble*   linkages;
+  adouble*   fgad;
+  adouble*   time_array_tmp;
+  adouble*   single_trajectory_tmp;
+  adouble*   L_ad_tmp;
+  adouble*   u_spline;
+  adouble*   z_spline;
+  adouble*   y2a_spline;
+  adouble**   states_next;
+  adouble**   controls_next;
+  adouble**   derivatives_next;
+  adouble**   path_next;
+  adouble**   path_bar;
+  adouble**   states_bar;
+  adouble**   controls_bar;
+  adouble**   derivatives_bar;
+  adouble**   observed_variable;
+  adouble**   observed_residual;
+  adouble**   lam_resid;
+  adouble**   interp_states_pe;
+  adouble**   interp_controls_pe;
+  double*    lambda_d;
+  double*    fg;
+  bool       trace_f_done;
+  IGroup*    igroup;
+  char       text[2000];
+  FILE*      psopt_solution_summary_file;
+  FILE*      mesh_statistics;
+  FILE*      mesh_statistics_tex;
+  int        current_mesh_refinement_iteration;
+  bool       auto_linked_flag;
+  bool       enable_nlp_counters;
+  string     differential_defects;
+  clock_t    start_ticks;
 
-// tape tags to be used by ADOL_C
+  // tape tags to be used by ADOL_C
 
   int tag_f     ;
   int tag_g 	;
@@ -635,8 +658,8 @@ struct work_str {
 
 
 struct xad_str {
-    adouble *xad;
-    Workspace *workspace;
+  adouble *xad;
+  Workspace *workspace;
 };
 
 typedef xad_str XAD;
@@ -650,7 +673,7 @@ typedef xad_str XAD;
 void ScalarGradientAD( adouble (*fun)(adouble *, Workspace*), DMatrix& x, DMatrix* grad, bool* flag, int itag, Workspace* workspace );
 
 void EfficientlyComputeJacobianNonZeros( void fun(DMatrix& x, DMatrix* f, Workspace* ), DMatrix& x,
-                int nf, double *nzvalue, int nnz, int* iArow, int* jAcol, IGroup* igroup, GRWORK* grw, Workspace* workspace );
+                                         int nf, double *nzvalue, int nnz, int* iArow, int* jAcol, IGroup* igroup, GRWORK* grw, Workspace* workspace );
 
 void compute_jacobian_of_constraints_with_respect_to_variables(DMatrix& Jc, DMatrix& X, DMatrix& XL, DMatrix& XU, Workspace* workspace);
 
@@ -706,7 +729,7 @@ void JacobianRow( void fun(DMatrix& x, DMatrix* f, Workspace* ), DMatrix& x, int
                   DMatrix* JacRow, GRWORK* grw, Workspace* workspace );
 
 void JacobianColumn( void fun(DMatrix& x, DMatrix* f, Workspace* ), DMatrix& x, DMatrix& xlb, DMatrix& xub, int jCol,
-                DMatrix* JacColumn, GRWORK* grw, Workspace* workspace );
+                     DMatrix* JacColumn, GRWORK* grw, Workspace* workspace );
 
 void evaluate_matrix_of_integrated_errors_in_phase(DMatrix& eta, int iphase, adouble* xad, int nsteps, Workspace* workspace);
 
@@ -754,33 +777,33 @@ void extract_parameter_covariance(DMatrix& Cp, DMatrix& C, Workspace* workspace)
 static const double pi = 3.141592653589793;
 
 int NLP_interface(
-         Alg& algorithm,
-         DMatrix* x0,
-         double (*f)(DMatrix&, Workspace*),
-	 void (*g)(DMatrix&,DMatrix*,Workspace*),
-	 int m          = 0,
-	 int neqcstr    = 0,
-	 DMatrix* xlb   = NULL,
-	 DMatrix* xub   = NULL,
-         DMatrix* lambda= NULL,
-         int hotflag    = 0,
-         int iprint     = 1,
-         Workspace* workspace=NULL,
-         void* user_data = NULL  );
+    Alg& algorithm,
+    DMatrix* x0,
+    double (*f)(DMatrix&, Workspace*),
+    void (*g)(DMatrix&,DMatrix*,Workspace*),
+    int m          = 0,
+    int neqcstr    = 0,
+    DMatrix* xlb   = NULL,
+    DMatrix* xub   = NULL,
+    DMatrix* lambda= NULL,
+    int hotflag    = 0,
+    int iprint     = 1,
+    Workspace* workspace=NULL,
+    void* user_data = NULL  );
 
 
 
 void ScalarGradient( double (*fun)(DMatrix& x, Workspace*), DMatrix& x,DMatrix* grad, GRWORK* grw, Workspace* workspace );
 
 void DetectJacobianSparsity(void fun(DMatrix& x, DMatrix* f, Workspace* ), DMatrix& x, int nf,
-                           int* nnzA, int* iArow, int* jAcol, double* Aij,
-                           int* nnzG, int* jGrow, int* jGcol,
-                           GRWORK* grw, Workspace* workspace);
+                            int* nnzA, int* iArow, int* jAcol, double* Aij,
+                            int* nnzG, int* jGrow, int* jGcol,
+                            GRWORK* grw, Workspace* workspace);
 
 void ComputeJacobianNonZeros( void fun(DMatrix& x, DMatrix* f ), DMatrix& x, int nf, double *nzvalue, int nnz, int* iArow, int* jAcol, GRWORK* grw, Workspace* workspace );
 
 void Jacobian( void fun(DMatrix& x, DMatrix* f ), DMatrix& x,
-                DMatrix* grad, GRWORK* grw );
+               DMatrix* grad, GRWORK* grw );
 
 void initialize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Workspace* workspace);
 
@@ -910,10 +933,10 @@ void polar(DMatrix& theta, DMatrix& r, const string& title,
            const char* legend=NULL, const char* terminal=NULL, const char* output=NULL);
 
 void polar(DMatrix& theta, DMatrix& r, DMatrix& theta2, DMatrix& r2, const string& title,
-            const char* legend=NULL, const char* terminal=NULL, const char* output=NULL);
+           const char* legend=NULL, const char* terminal=NULL, const char* output=NULL);
 
 void polar(DMatrix& theta, DMatrix& r, DMatrix& theta2, DMatrix& r2,  DMatrix& theta3, DMatrix& r3, const string& title,
-            const char* legend=NULL, const char* terminal=NULL, const char* output=NULL);
+           const char* legend=NULL, const char* terminal=NULL, const char* output=NULL);
 
 void surf(DMatrix& x, DMatrix& y, DMatrix& z, const string& title, const char* xlabel, const char* ylabel, const char* zlabel, const char* terminal=NULL, const char* output=NULL, const char* view=NULL);
 
@@ -1013,45 +1036,49 @@ adouble ff_ad(adouble* xad, Workspace* workspace);
 
 
 void rk4_propagate( void (*dae)(adouble* derivatives, adouble* path, adouble* states,
-         adouble* controls, adouble* parameters, adouble& time,
-        adouble* xad, int iphase, Workspace* workspace),
-        DMatrix& control_trajectory,
-        DMatrix& time_vector,
-        DMatrix& initial_state,
-	DMatrix& parameters,
-        Prob & problem,
-        int iphase,
-        DMatrix& state_trajectory, Workspace* workspace);
+                                adouble* controls, adouble* parameters, adouble& time,
+                                adouble* xad, int iphase, Workspace* workspace),
+                    DMatrix& control_trajectory,
+                    DMatrix& time_vector,
+                    DMatrix& initial_state,
+                    DMatrix& parameters,
+                    Prob & problem,
+                    int iphase,
+                    DMatrix& state_trajectory, Workspace* workspace);
 
 void rkf_propagate( void (*dae)(adouble* derivatives, adouble* path, adouble* states,
-         adouble* controls, adouble* parameters, adouble& time,
-        adouble* xad, int iphase, Workspace* workspace),
-        DMatrix& control_trajectory,
-        DMatrix& time_vector,
-        DMatrix& initial_state,
-	DMatrix& parameters,
-        double tolerance,
-        double hmin,
-	double hmax,
-        Prob & problem,
-        int iphase,
-        DMatrix& state_trajectory,
-        DMatrix& new_time_vector,
-	DMatrix& new_control_trajectory, Workspace* workspace);
+                                adouble* controls, adouble* parameters, adouble& time,
+                                adouble* xad, int iphase, Workspace* workspace),
+                    DMatrix& control_trajectory,
+                    DMatrix& time_vector,
+                    DMatrix& initial_state,
+                    DMatrix& parameters,
+                    double tolerance,
+                    double hmin,
+                    double hmax,
+                    Prob & problem,
+                    int iphase,
+                    DMatrix& state_trajectory,
+                    DMatrix& new_time_vector,
+                    DMatrix& new_control_trajectory, Workspace* workspace);
+
+//void auto_split_observations(Prob& problem, DMatrix& observation_nodes, DMatrix& observations);
 
 
-void auto_split_observations(Prob& problem, DMatrix& observation_nodes, DMatrix& observations);
-
-adouble endpoint_cost_for_parameter_estimation(adouble* initial_states, adouble* final_states, adouble* parameters,adouble& t0, adouble& tf, adouble* xad, int iphase, Workspace* workspace);
+class EndpointCostForParameterEsimator : public EndpointFunctor
+{
+  adouble operator ()(adouble* initial_states, adouble* final_states, adouble* parameters,adouble& t0, adouble& tf, adouble* xad, int iphase, Workspace* workspace) override;
+};
+extern EndpointCostForParameterEsimator endpoint_cost_for_parameter_estimation;
 
 
 extern "C" {
-	 int dgeqrf_(long int *m, long int *n, double *a, long int *
-	lda, double *tau, double *work, long int *lwork, long int *info);
+int dgeqrf_(long int *m, long int *n, double *a, long int *
+            lda, double *tau, double *work, long int *lwork, long int *info);
 int dormqr_(char *side, char *trans, long int *m, long int *n,
-        long int *k, double *a, long int *lda, double *tau, double *
-        c__, long int *ldc, double *work, long int *lwork, long int *info,
-        long int side_len, long int trans_len);
+            long int *k, double *a, long int *lda, double *tau, double *
+            c__, long int *ldc, double *work, long int *lwork, long int *info,
+            long int side_len, long int trans_len);
 
 }
 
