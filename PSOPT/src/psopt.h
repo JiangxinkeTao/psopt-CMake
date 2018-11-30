@@ -180,8 +180,6 @@ string  method;
 } MeshStats;
 
 
-
-
 struct guess_str {
   DMatrix controls;
   DMatrix states;
@@ -481,6 +479,7 @@ typedef struct {
 
 } IGroup;
 
+class SparseMatrix;
 struct work_str {
 
    Sol*      solution;

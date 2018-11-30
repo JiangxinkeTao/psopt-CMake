@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(psopt C CXX)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(IPOPT REQUIRED)
 find_package(ADOLC REQUIRED)
 find_package(CXSparse REQUIRED)
