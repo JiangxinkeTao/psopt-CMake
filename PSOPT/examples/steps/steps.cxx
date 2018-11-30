@@ -140,11 +140,11 @@ int main(void)
 ////////////////////////////////////////////////////////////////////////////
 
 
-    problem.phases(1).bounds.lower.controls(1) = -1.0;
-    problem.phases(1).bounds.upper.controls(1) =  1.0;
+    problem.phases(1).bounds.lower.controls(1) = -2.0;
+    problem.phases(1).bounds.upper.controls(1) =  2.0;
     problem.phases(1).bounds.lower.states(1) = 0.0;
     problem.phases(1).bounds.upper.states(1) = 5.0;
-    problem.phases(1).bounds.lower.events(1) = 1.0;
+    problem.phases(1).bounds.lower.events(1) = 3.0;
     problem.phases(3).bounds.lower.events(1) = 1.0;
 
 

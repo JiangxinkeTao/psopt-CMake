@@ -34,7 +34,7 @@ Author:    Professor Victor M. Becerra
 
 void validate_user_input(Prob& problem, Alg& algorithm, Workspace* workspace)
 {
-    char m[100];
+    char m[150];
     int i;
 
     if (algorithm.nlp_method != "IPOPT" && algorithm.nlp_method!="SNOPT")
@@ -206,7 +206,7 @@ void validate_user_input(Prob& problem, Alg& algorithm, Workspace* workspace)
 
 		if ( !isSymmetric(problem.phase[i].covariance)  )
 		{
-		  sprintf(m,"Matrix problem.phases(%i).covariance must be symmetric",i+1, i+1);
+			sprintf(m,"Matrix problem.phases(%i).covariance must be symmetric",i+1);
  		  error_message(m);
 		}
 

@@ -226,26 +226,26 @@ int auto_link2_count(Prob& problem, int nstates, int ncontrols)
 
 void auto_phase_setup(Prob& problem,int n_final_events, DMatrix& nodes)
 {
-	int i, j;
+  int i, j;
 
-        if (problem.nphases == 1) return;
+  if (problem.nphases == 1) return;
 
 
-	for(i=2;i<=problem.nphases;i++)
-	{
-	        if ( nodes.GetNoRows() == 1 ) j = 1;
-		else if (nodes.GetNoRows() == problem.nphases) j=i;
-		problem.phases(i).nstates   		= problem.phases(1).nstates;
-		problem.phases(i).ncontrols 		= problem.phases(1).ncontrols;
-    		problem.phases(i).nevents   		= 0;
-    		problem.phases(i).npath     		= problem.phases(1).npath;
-    		problem.phases(i).nodes                 = nodes(j,colon());
-		problem.phases(i).nparameters           = 0;
-                problem.phases(i).nobserved             = problem.phases(1).nobserved;
-                problem.phases(i).nsamples              = problem.phases(1).nsamples;
-	}
+  for(i=2;i<=problem.nphases;i++)
+  {
+    if ( nodes.GetNoRows() == 1 ) j = 1;
+    else if (nodes.GetNoRows() == problem.nphases) j=i;
+    problem.phases(i).nstates   		= problem.phases(1).nstates;
+    problem.phases(i).ncontrols 		= problem.phases(1).ncontrols;
+    problem.phases(i).nevents   		= 0;
+    problem.phases(i).npath     		= problem.phases(1).npath;
+    problem.phases(i).nodes                 = nodes(j,colon());
+    problem.phases(i).nparameters           = 0;
+    problem.phases(i).nobserved             = problem.phases(1).nobserved;
+    problem.phases(i).nsamples              = problem.phases(1).nsamples;
+  }
 
-	problem.phases(problem.nphases).nevents  	= n_final_events;
+  problem.phases(problem.nphases).nevents  	= n_final_events;
 
 
 }
@@ -259,81 +259,81 @@ void  auto_phase_bounds(Prob& problem)
 	int i;
 	double t0l, t0u, tfl, tfu;
 
-        if (problem.nphases == 1) return;
+	if (problem.nphases == 1) return;
 
 	double dt, t0, tf;
 
 	if ( problem.bounds.lower.times.isEmpty() ) {
 
-           dt = problem.phases(problem.nphases).bounds.upper.EndTime - problem.phases(1).bounds.lower.StartTime;
-           t0 = problem.phases(1).bounds.lower.StartTime;
-           tf = problem.phases(problem.nphases).bounds.upper.EndTime;
+		dt = problem.phases(problem.nphases).bounds.upper.EndTime - problem.phases(1).bounds.lower.StartTime;
+		t0 = problem.phases(1).bounds.lower.StartTime;
+		tf = problem.phases(problem.nphases).bounds.upper.EndTime;
 
 	}
 
 	else {
 
-	   problem.phases(1).bounds.lower.StartTime = problem.bounds.lower.times(1);
-	   problem.phases(1).bounds.upper.StartTime = problem.bounds.upper.times(1);
-	   problem.phases(problem.nphases).bounds.lower.EndTime = problem.bounds.lower.times("end");
-	   problem.phases(problem.nphases).bounds.upper.EndTime = problem.bounds.upper.times("end");
+		problem.phases(1).bounds.lower.StartTime = problem.bounds.lower.times(1);
+		problem.phases(1).bounds.upper.StartTime = problem.bounds.upper.times(1);
+		problem.phases(problem.nphases).bounds.lower.EndTime = problem.bounds.lower.times("end");
+		problem.phases(problem.nphases).bounds.upper.EndTime = problem.bounds.upper.times("end");
 
-	   dt = problem.phases(problem.nphases).bounds.upper.EndTime - problem.phases(1).bounds.lower.StartTime;
-           t0 = problem.phases(1).bounds.lower.StartTime;
-           tf = problem.phases(problem.nphases).bounds.upper.EndTime;
+		dt = problem.phases(problem.nphases).bounds.upper.EndTime - problem.phases(1).bounds.lower.StartTime;
+		t0 = problem.phases(1).bounds.lower.StartTime;
+		tf = problem.phases(problem.nphases).bounds.upper.EndTime;
 
 	}
 
 	for(i=2;i<=problem.nphases;i++)
 	{
-	    problem.phases(i).bounds.lower.states = problem.phases(1).bounds.lower.states;
-    	    problem.phases(i).bounds.upper.states = problem.phases(1).bounds.upper.states;
-	    problem.phases(i).bounds.lower.controls = problem.phases(1).bounds.lower.controls;
-    	    problem.phases(i).bounds.upper.controls = problem.phases(1).bounds.upper.controls;
+		problem.phases(i).bounds.lower.states = problem.phases(1).bounds.lower.states;
+		problem.phases(i).bounds.upper.states = problem.phases(1).bounds.upper.states;
+		problem.phases(i).bounds.lower.controls = problem.phases(1).bounds.lower.controls;
+		problem.phases(i).bounds.upper.controls = problem.phases(1).bounds.upper.controls;
 
-	    problem.phases(i).bounds.lower.path = problem.phases(1).bounds.lower.path;
-    	    problem.phases(i).bounds.upper.path = problem.phases(1).bounds.upper.path;
+		problem.phases(i).bounds.lower.path = problem.phases(1).bounds.lower.path;
+		problem.phases(i).bounds.upper.path = problem.phases(1).bounds.upper.path;
 
 
 
-	    if ( problem.bounds.lower.times.isEmpty() ) {
-                if (problem.phases(i).nobserved==0) {
-	            	problem.phases(i).bounds.lower.StartTime = t0;
-	 	    	problem.phases(i).bounds.upper.StartTime = tf;
-                }
-	        else {
-	            	problem.phases(i).bounds.lower.StartTime = problem.phases(i).observation_nodes(1);
-	 	    	problem.phases(i).bounds.upper.StartTime = problem.phases(i).observation_nodes(1);
-                }
-	    }
-	    else {
-		problem.phases(i).bounds.lower.StartTime = problem.bounds.lower.times(i);
- 	    	problem.phases(i).bounds.upper.StartTime = problem.bounds.upper.times(i);
-            }
+		if ( problem.bounds.lower.times.isEmpty() ) {
+			if (problem.phases(i).nobserved==0) {
+				problem.phases(i).bounds.lower.StartTime = t0;
+				problem.phases(i).bounds.upper.StartTime = tf;
+			}
+			else {
+				problem.phases(i).bounds.lower.StartTime = problem.phases(i).observation_nodes(1);
+				problem.phases(i).bounds.upper.StartTime = problem.phases(i).observation_nodes(1);
+			}
+		}
+		else {
+			problem.phases(i).bounds.lower.StartTime = problem.bounds.lower.times(i);
+			problem.phases(i).bounds.upper.StartTime = problem.bounds.upper.times(i);
+		}
 
 	}
 
 	for(i=1;i<problem.nphases;i++)
 	{
-            if (problem.phases(i).nobserved==0) {
-	            problem.phases(i).bounds.lower.EndTime = problem.phases(i+1).bounds.lower.StartTime;
-		    problem.phases(i).bounds.upper.EndTime = problem.phases(i+1).bounds.upper.StartTime;
-            }
-            else {
-	            problem.phases(i).bounds.lower.EndTime = problem.phases(i).observation_nodes("end");
-		    problem.phases(i).bounds.upper.EndTime = problem.phases(i).observation_nodes("end");
+		if (problem.phases(i).nobserved==0) {
+			problem.phases(i).bounds.lower.EndTime = problem.phases(i+1).bounds.lower.StartTime;
+			problem.phases(i).bounds.upper.EndTime = problem.phases(i+1).bounds.upper.StartTime;
+		}
+		else {
+			problem.phases(i).bounds.lower.EndTime = problem.phases(i).observation_nodes("end");
+			problem.phases(i).bounds.upper.EndTime = problem.phases(i).observation_nodes("end");
 
-            }
+		}
 	}
 
 
- 	for (i=1;i<=problem.nphases;i++) {
-         	fprintf(stderr,"\n Phase %i lower start time = %f", i, problem.phases(i).bounds.lower.StartTime);
-         	fprintf(stderr,"\n Phase %i upper start time = %f", i, problem.phases(i).bounds.upper.StartTime);
+	for (i=1;i<=problem.nphases;i++) {
+		fprintf(stderr,"\n Phase %i lower start time = %f", i, problem.phases(i).bounds.lower.StartTime);
+		fprintf(stderr,"\n Phase %i upper start time = %f", i, problem.phases(i).bounds.upper.StartTime);
 
-         	fprintf(stderr,"\n Phase %i lower end time = %f",  i, problem.phases(i).bounds.lower.EndTime);
-         	fprintf(stderr,"\n Phase %i upper end time = %f",   i, problem.phases(i).bounds.upper.EndTime);
- 	}
+		fprintf(stderr,"\n Phase %i lower end time = %f",  i, problem.phases(i).bounds.lower.EndTime);
+		fprintf(stderr,"\n Phase %i upper end time = %f",   i, problem.phases(i).bounds.upper.EndTime);
+	}
 
 }
 
