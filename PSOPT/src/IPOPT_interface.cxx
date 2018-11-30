@@ -422,7 +422,7 @@ void save_jacobian_sparsity_pattern(Index* rindex, Index* cindex, long nvars, lo
     fprintf(jac_file,"% li %li  %f", ncols, nvars, zero );
 
     for (int i = 1; i< nnz; i++ ) {
-        fprintf(jac_file,"\n%li %li  %f", rindex[i]+1, cindex[i]+1, one );
+        fprintf(jac_file,"\n%i %i  %f", rindex[i]+1, cindex[i]+1, one );
     }
 
     fclose(jac_file);

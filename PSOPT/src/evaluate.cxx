@@ -247,7 +247,7 @@ void evaluate_solution(Prob& problem,Alg& algorithm,Sol& solution, Workspace* wo
 	psopt_print(workspace,msg);
 	sprintf(msg,"\n_____________________________Statistics per phase______________________________");
 	psopt_print(workspace,msg);
-	sprintf(msg,"\nPhase\t\tNodes\t\tMax ODE Error\tMin ODE error\tMean ODE Error", workspace->current_mesh_refinement_iteration );
+	sprintf(msg,"\nPhase\t\tNodes\t\tMax ODE Error\tMin ODE error\tMean ODE Error");
 	psopt_print(workspace,msg);
 
         solution.mesh_stats[ workspace->current_mesh_refinement_iteration-1 ].epsilon_max = 0;
@@ -286,7 +286,7 @@ void evaluate_solution(Prob& problem,Alg& algorithm,Sol& solution, Workspace* wo
   		mv = mean(tra(solution.relative_errors[iphase-1]));
 		emax_history( workspace->current_mesh_refinement_iteration, 1) = length(solution.nodes[iphase-1]);
 		emax_history( workspace->current_mesh_refinement_iteration, 2) = Max(solution.relative_errors[iphase-1]);
-		sprintf(msg,"\n%i\t\t%i\t\t%e\t%e\t%e", iphase, length(solution.nodes[iphase-1]), Max(solution.relative_errors[iphase-1]),  Min(solution.relative_errors[iphase-1]), mv(1,1) );
+		sprintf(msg,"\n%i\t\t%li\t\t%e\t%e\t%e", iphase, length(solution.nodes[iphase-1]), Max(solution.relative_errors[iphase-1]),  Min(solution.relative_errors[iphase-1]), mv(1,1) );
 		psopt_print(workspace,msg);
 
 		if ( emax_history( workspace->current_mesh_refinement_iteration, 2)>solution.mesh_stats[ workspace->current_mesh_refinement_iteration-1 ].epsilon_max )

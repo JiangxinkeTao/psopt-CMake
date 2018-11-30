@@ -122,8 +122,6 @@ void plot(DMatrix& xa, DMatrix& ya, const string& title, const char* xlabel, con
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
     fprintf(gscript,"'XY.dat' using 1:%i title \"%s\" ",  i, legend_i);
       fprintf(gscript,"with linespoints");
@@ -231,8 +229,6 @@ void multiplot(DMatrix& xa, DMatrix& ya, const string& title, const char* xlabel
 		else {
 			if (ny>1)
 				sprintf(ylabel_i,"%i",i-1);
-			else
-				sprintf(ylabel_i,"");
 		}
 
 		fprintf(gscript,"\nset ylabel '%s'", ylabel_i);
@@ -250,8 +246,6 @@ void multiplot(DMatrix& xa, DMatrix& ya, const string& title, const char* xlabel
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 		fprintf(gscript,"'XY.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -352,8 +346,6 @@ void plot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, const string& 
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
     fprintf(gscript,"'XY1.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -390,8 +382,6 @@ void plot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, const string& 
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
     fprintf(gscript,"'XY2.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -492,8 +482,6 @@ void spplot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, const string
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
     fprintf(gscript,"'XY1.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -530,8 +518,6 @@ void spplot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, const string
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
     fprintf(gscript,"'XY2.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -637,8 +623,6 @@ void plot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, DMatrix& x3a, 
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 		fprintf(gscript,"'XY1.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -675,8 +659,6 @@ void plot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, DMatrix& x3a, 
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 		fprintf(gscript,", 'XY2.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -714,8 +696,6 @@ void plot(DMatrix& x1a, DMatrix& y1a, DMatrix& x2a, DMatrix& y2a, DMatrix& x3a, 
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 		fprintf(gscript,", 'XY3.dat' using 1:%i title \"%s\" ",  i, legend_i);
 
@@ -811,8 +791,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, const string& title,  const char* leg
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 
 		fprintf(gscript,"'XY.dat' using 1:%i title \"%s\" ",  i, legend_i);
@@ -908,8 +886,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, DMatrix& theta2_a, DMatrix& r2_a, con
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 
 		fprintf(gscript,"'XY.dat' using 1:%i title \"%s\" ",  i, legend_i);
@@ -963,8 +939,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, DMatrix& theta2_a, DMatrix& r2_a, con
 		else {
 			if (ny>1)
 				sprintf(legend_i,"%i",i-1);
-			else
-				sprintf(legend_i,"");
 		}
 
 		fprintf(gscript,", 'XY2.dat' using 1:%i title \"%s\" ",  i, legend_i);
@@ -1061,8 +1035,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, DMatrix& theta2_a, DMatrix& r2_a, DMa
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
 
     fprintf(gscript,"'XY.dat' using 1:%i title \"%s\" ",  i, legend_i);
@@ -1117,8 +1089,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, DMatrix& theta2_a, DMatrix& r2_a, DMa
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
 
     fprintf(gscript,", 'XY2.dat' using 1:%i title \"%s\" ",  i, legend_i);
@@ -1171,8 +1141,6 @@ void polar(DMatrix& theta_a, DMatrix& r_a, DMatrix& theta2_a, DMatrix& r2_a, DMa
     else {
       if (ny>1)
         sprintf(legend_i,"%i",i-1);
-      else
-        sprintf(legend_i,"");
     }
 
     fprintf(gscript,", 'XY3.dat' using 1:%i title \"%s\" ",  i, legend_i);

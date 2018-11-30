@@ -62,7 +62,9 @@ void psopt_main(Sol& solution, Prob& problem, Alg& algorithm)
 
 int MAX_STANDARD_PS_NODES = 200;
 
-string startup_message= "\n *******************************************************************************\n * This is PSOPT, an optimal control solver based on pseudospectral and local  *\n * collocation methods, together with large scale nonlinear programming        *";
+string startup_message= "\n *******************************************************************************\n "
+                        "* This is PSOPT, an optimal control solver based on pseudospectral and local  *\n "
+                        "* collocation methods, together with large scale nonlinear programming        *";
 
 string license_notice=  "\n * Copyright (C) 2010  Victor M. Becerra.                                      *\n *                                                                             *\n * This library is free software; you can redistribute it and/or               *\n * modify it under the terms of the GNU Lesser General Public License          *\n * as published by the Free Software Foundation;  version 2.1.                 *\n * This library is distributed in the hope that it will be useful,             *\n * but WITHOUT ANY WARRANTY; without even the implied warranty of              *\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU           *\n * Lesser General Public License for more details.                             *\n * You should have received a copy of the GNU Lesser General Public            *\n * License along with this library;                                            *\n * If not please visit http://www.gnu.org/licenses                             *\n *                                                                             *";
 
